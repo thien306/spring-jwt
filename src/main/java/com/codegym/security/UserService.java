@@ -1,6 +1,5 @@
-package com.codegym.configuration.service;
+package com.codegym.security;
 
-import com.codegym.configuration.UserPrinciple;
 import com.codegym.model.User;
 
 import com.codegym.repository.IUserRepository;
@@ -22,5 +21,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         return UserPrinciple.build(userRepository.findByUsername(username));
     }
+
+
 
 }

@@ -1,4 +1,4 @@
-package com.codegym.configuration.jwt;
+package com.codegym.configuration;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

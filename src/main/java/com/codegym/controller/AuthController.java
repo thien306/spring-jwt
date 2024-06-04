@@ -1,8 +1,8 @@
 package com.codegym.controller;
 
-import com.codegym.configuration.service.JwtResponse;
-import com.codegym.configuration.service.JwtService;
-import com.codegym.configuration.service.UserService;
+import com.codegym.jwt.JwtResponse;
+import com.codegym.jwt.JwtService;
+import com.codegym.security.UserService;
 import com.codegym.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

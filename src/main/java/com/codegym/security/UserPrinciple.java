@@ -1,4 +1,4 @@
-package com.codegym.configuration;
+package com.codegym.security;
 
 import com.codegym.model.Role;
 import com.codegym.model.User;

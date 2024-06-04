@@ -1,24 +1,21 @@
-package com.codegym.configuration.service;
+package com.codegym.jwt;
 
-import com.codegym.configuration.UserPrinciple;
+import com.codegym.security.UserPrinciple;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
-import java.nio.file.attribute.UserPrincipal;
 import java.security.Key;
 import java.util.Date;
 
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "23456789543456789"; // khóa bí mật dùng để ký và xác thực JWT
+    private static final String SECRET_KEY = "123456789987654321123456789987654321123456789"; // khóa bí mật dùng để ký và xác thực JWT
     private static final long EXPIRE_TIME = 86400000L; // Thời gian hết hạn của JWT
 
-    private Key getSingKey() {
+    private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
@@ -29,18 +26,17 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date((new Date()).getTime() + EXPIRE_TIME))
-                .signWith(getSingKey(), SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_TIME))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public Boolean validateJwtToke(String authToken) {
+    public Boolean validateJwtToken(String authToken) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(SECRET_KEY)
+                    .setSigningKey(getSigningKey())
                     .build()
-                    .parse(authToken);
-
+                    .parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException e) {
             System.out.println("Mã thông báo JWT không hợp lệ -> Message: " + e.getMessage());
@@ -54,11 +50,11 @@ public class JwtService {
         return false;
     }
 
-    public String getUsernameFormJwtToke(String toke) {
+    public String getUsernameFromJwtToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(getSigningKey())
                 .build()
-                .parseClaimsJws(toke)
+                .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
     }
